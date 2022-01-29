@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Counters Dev Challenge"
 include ':app'
+include ':internet_connection'
+include ':http_client'
