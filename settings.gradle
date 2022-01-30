@@ -16,3 +16,4 @@ rootProject.name = "Counters Dev Challenge"
 include ':app'
 include ':internet_connection'
 include ':http_client'
+include ':base_use_case'
