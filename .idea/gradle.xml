@@ -12,6 +12,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base_use_case" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/counters" />
             <option value="$PROJECT_DIR$/http_client" />
             <option value="$PROJECT_DIR$/internet_connection" />
           </set>

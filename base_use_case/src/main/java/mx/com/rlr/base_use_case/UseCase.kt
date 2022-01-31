@@ -1,30 +1,24 @@
 package mx.com.rlr.base_use_case
 
-sealed class UseCase<T> {
-    data class Progress<T>(val loading: Boolean, val partialData: T? = null) : UseCase<T>()
-    data class Success<T>(val data: T) : UseCase<T>()
-    data class Failure<T>(val e: Throwable) : UseCase<T>()
+/**
+ * Abstract class for a Use Case (Interactor in terms of Clean Architecture).
+ * This abstraction represents an execution unit for different use cases (this means than any use
+ * case in the application should implement this contract).
+ *
+ * By convention each [UseCase] implementation will execute its job in a background thread
+ * (kotlin coroutine) and will post the result in the UI thread.
+ */
+abstract class UseCase<out Type, in Params, out Failure> {
 
-    companion object {
-        fun <T> loading(
-            isLoading: Boolean = true,
-            partialData: T? = null
-        ): UseCase<T> = Progress(isLoading, partialData)
+    /**
+     * Execute the use case with the parameters received. The response its represented as a Either.
+     * @see Either
+     */
+    abstract suspend fun run(params: Params): Either<Failure, Type>
 
-        fun <T> success(
-            data: T
-        ): UseCase<T> = Success(data)
+    /**
+     * Used only to identify that your "in" or "out" type of Use Case its not required.
+     */
+    object None
 
-        fun <T> failure(
-            e: Throwable
-        ): UseCase<T> = Failure(e)
-    }
-}
-
-fun <T, H> UseCase<T>.mapData(block: (input: T) -> H): UseCase<H> {
-    return when (this) {
-        is UseCase.Success -> UseCase.success(block.invoke(data))
-        is UseCase.Failure -> UseCase.failure(e)
-        is UseCase.Progress -> UseCase.loading(loading, partialData?.let { block.invoke(it) })
-    }
 }

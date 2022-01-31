@@ -2,10 +2,9 @@ package mx.com.rlr.internet_connection.data
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
-
 
 object InternetConnectionState : KoinComponent {
 
@@ -15,9 +14,16 @@ object InternetConnectionState : KoinComponent {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        Timber.d("isOnline_ ${connectivityManager.isDefaultNetworkActive}")
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
 
-       return connectivityManager.isDefaultNetworkActive
+        return when {
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
     }
 
 }
