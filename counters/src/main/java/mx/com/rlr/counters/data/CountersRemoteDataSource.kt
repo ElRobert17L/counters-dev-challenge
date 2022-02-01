@@ -13,7 +13,7 @@ import mx.com.rlr.counters.domain.use_case.get_counters.GetCountersResponse
 import mx.com.rlr.counters.domain.use_case.inc_counter.IncCounterFailure
 import mx.com.rlr.counters.domain.use_case.inc_counter.IncCounterResponse
 
-interface CountersRemoteDataSource {
+internal interface CountersRemoteDataSource {
 
     suspend fun addCounter(
         title: String
@@ -28,7 +28,7 @@ interface CountersRemoteDataSource {
     ): Either<DeleteCounterFailure, DeleteCounterResponse>
 
     suspend fun getCounters(
-        id: GetCountersParams
+        params: GetCountersParams
     ): Either<GetCountersFailure, GetCountersResponse>
 
     suspend fun incCounter(

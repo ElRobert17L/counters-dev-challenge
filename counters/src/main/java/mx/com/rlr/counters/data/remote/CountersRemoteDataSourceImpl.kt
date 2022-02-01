@@ -85,7 +85,7 @@ internal class CountersRemoteDataSourceImpl(): CountersRemoteDataSource, KoinCom
     }
 
     override suspend fun getCounters(
-        id: GetCountersParams
+        params: GetCountersParams
     ): Either<GetCountersFailure, GetCountersResponse> = try {
         retrofitApiCall {
             apiService.getCounters()
