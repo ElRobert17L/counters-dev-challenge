@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_home"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="mx.com.rlr.countersdevchallenge.presentation.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_crudFragment"
+            app:destination="@id/crudFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/crudFragment"
+        android:name="mx.com.rlr.countersdevchallenge.presentation.home.crud_counter.CrudFragment"
+        android:label="crud_fragment"
+        tools:layout="@layout/crud_fragment" >
+        <argument
+            android:name="option"
+            app:argType="string"
+            android:defaultValue="Unknown" />
+    </fragment>
+
+</navigation>

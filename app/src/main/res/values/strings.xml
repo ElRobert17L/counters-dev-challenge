@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Counters Dev Challenge</string>
+    <string name="welcome">Welcome to Counters Dev Challenge App</string>
+    <string name="start">Start</string>
+    <string name="list_of_counters">List of counters</string>
+    <string name="add_counter">Add counter</string>
+    <string name="delete_counter">Delete counter</string>
+    <string name="increase_counter">Increase counter</string>
+    <string name="decrease_counter">Decrease counter</string>
+    <string name="empty_counters_list">Empty counters list :(</string>
+    <string name="id">Id</string>
+    <string name="title">Title</string>
+    <string name="count">Count</string>
 </resources>

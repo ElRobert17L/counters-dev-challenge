@@ -9,7 +9,7 @@ typealias IncCounterStatus = Status<IncCounterFailure, IncCounterResponse>
 
 interface IncCounter {
 
-    fun deleteCounterAsLiveData(
+    fun incCounterAsLiveData(
         id: String
     ): LiveData<IncCounterStatus>
 

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    tools:context=".presentation.home.HomeFragment">
+
+    <TextView
+        android:id="@+id/home_fragment_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:text="@string/list_of_counters"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_fragment_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/home_fragment_tv_title"
+        app:layout_constraintBottom_toTopOf="@+id/home_fragment_gl"
+        >
+
+        <TextView
+            android:id="@+id/home_fragment_tv_empty_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:text="@string/empty_counters_list"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/home_fragment_ll_titles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/id"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/title"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/count"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_fragment_rv_counters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/home_fragment_ll_titles"
+            tools:listitem="@layout/item_counter"
+            tools:itemCount="5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <GridLayout
+        android:id="@+id/home_fragment_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:rowCount="2"
+        android:columnCount="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_fragment_btn_add"
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:text="@string/add_counter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_fragment_btn_delete"
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:text="@string/delete_counter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_fragment_btn_inc"
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:text="@string/increase_counter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_fragment_btn_dec"
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:text="@string/decrease_counter" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

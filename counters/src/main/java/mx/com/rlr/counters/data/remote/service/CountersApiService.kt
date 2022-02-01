@@ -38,15 +38,15 @@ internal interface CountersApiService {
 
     private object URL {
 
-        const val GET_COUNTERS: String = "counters"
+        const val GET_COUNTERS: String = "/api/v1/counters"
 
-        const val ADD_COUNTER: String = "counter"
+        const val ADD_COUNTER: String = "/api/v1/counter"
 
-        const val INC_COUNTER: String = "counter/inc"
+        const val INC_COUNTER: String = "/api/v1/counter/inc"
 
-        const val DEC_COUNTER: String = "counter/dec"
+        const val DEC_COUNTER: String = "/api/v1/counter/dec"
 
-        const val DELETE_COUNTER: String = "counter"
+        const val DELETE_COUNTER: String = "/api/v1/counter"
 
     }
 

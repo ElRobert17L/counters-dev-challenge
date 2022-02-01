@@ -15,7 +15,7 @@ class IncCounterImpl: IncCounter, KoinComponent {
 
     private val incCounterUseCase: IncCounterUseCase by inject()
 
-    override fun deleteCounterAsLiveData(
+    override fun incCounterAsLiveData(
         id: String
     ): LiveData<IncCounterStatus> = flow<IncCounterStatus> {
         emit(Status.Loading())
