@@ -1,10 +1,12 @@
 package mx.com.rlr.countersdevchallenge.presentation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import mx.com.rlr.base_use_case.Status
@@ -19,6 +21,8 @@ import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.vis
 import mx.com.rlr.countersdevchallenge.presentation.home.counters_adapter.CountersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.util.Locale
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
 
@@ -31,6 +35,8 @@ class HomeFragment : Fragment() {
     private val countersAdapter: CountersAdapter by lazy {
         CountersAdapter(onCounterOnClickListener = onCounterRowClick)
     }
+
+    private var mutableItems: ArrayList<Counter> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +78,7 @@ class HomeFragment : Fragment() {
     private fun setUpView(counters: List<Counter>) {
         if (counters.isEmpty()) {
             binding.apply {
+                homeFragmentSv.gone()
                 homeFragmentTvEmptyList.visible()
                 homeFragmentLlTitles.gone()
                 homeFragmentRvCounters.gone()
@@ -80,6 +87,7 @@ class HomeFragment : Fragment() {
             }
         } else {
             binding.apply {
+                homeFragmentSv.visible()
                 homeFragmentTvEmptyList.gone()
                 homeFragmentLlTitles.visible()
                 homeFragmentRvCounters.visible()
@@ -91,8 +99,42 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRecycler(counters: List<Counter>) {
+        mutableItems.clear()
+        mutableItems.addAll(counters)
+
         binding.homeFragmentRvCounters.adapter = countersAdapter
-        countersAdapter.submitList(counters)
+        countersAdapter.submitList(mutableItems)
+
+        setUpSearchView(mutableItems = mutableItems, counters = counters)
+    }
+
+    private fun setUpSearchView(mutableItems: ArrayList<Counter>, counters: List<Counter>) {
+        binding.homeFragmentSv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrBlank()) {
+                    mutableItems.clear()
+                    val search = newText.lowercase(Locale.getDefault())
+                    counters.forEach {
+                        if (it.id.lowercase(Locale.getDefault()).contains(search) || it.title.lowercase(Locale.getDefault()).contains(search)) {
+                            mutableItems.add(it)
+                        }
+                    }
+                    binding.homeFragmentRvCounters.adapter?.notifyDataSetChanged()
+                } else {
+                    mutableItems.apply {
+                        clear()
+                        addAll(counters)
+                    }
+                    binding.homeFragmentRvCounters.adapter?.notifyDataSetChanged()
+                }
+                return true
+            }
+        })
     }
 
     private fun setUpActions() {

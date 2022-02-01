@@ -46,10 +46,7 @@ internal class CountersRepositoryImpl : CountersRepository, KoinComponent {
 
     override suspend fun getCounters(
         params: GetCountersParams
-    ): Either<GetCountersFailure, GetCountersResponse> =
-        if (internetConnectionRepository.isOnline)
-            remoteDataSource.getCounters(params)
-        else Either.Left(GetCountersFailure.NetworkConnectionFailure)
+    ): Either<GetCountersFailure, GetCountersResponse> = remoteDataSource.getCounters(params)
 
     override suspend fun incCounter(
         params: String
