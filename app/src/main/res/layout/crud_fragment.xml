@@ -25,8 +25,52 @@
                 android:layout_marginTop="28dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                android:text="@string/list_of_counters"
+                android:text="@string/select_the_item_to_be_modified"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/crud_fragment_ll_titles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/id"
+                    android:textColor="@color/purple_700"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title"
+                    android:textColor="@color/purple_700"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/count"
+                    android:textColor="@color/purple_700"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/crud_fragment_rv_counters"
@@ -37,25 +81,8 @@
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_counter"
                 tools:itemCount="5" />
-
-            <TextView
-                android:id="@+id/crud_fragment_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                tools:text="@string/add_counter"
-                style="@style/TextAppearance.Material3.TitleLarge" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/crud_fragment_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                tools:text="@string/start" />
 
         </LinearLayout>
 

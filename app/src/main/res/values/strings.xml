@@ -11,4 +11,6 @@
     <string name="id">Id</string>
     <string name="title">Title</string>
     <string name="count">Count</string>
+    <string name="select_the_item_to_be_modified">Click on the item to be modified</string>
+    <string name="write_the_title">Write the title</string>
 </resources>

@@ -7,9 +7,7 @@ import retrofit2.Retrofit
 val httpClientModule = module {
 
     single<Retrofit> {
-        RetrofitBuilder(
-            baseUrl = "http://10.0.2.2:3000"
-        ).build()
+        RetrofitBuilder().build()
     }
 
 }

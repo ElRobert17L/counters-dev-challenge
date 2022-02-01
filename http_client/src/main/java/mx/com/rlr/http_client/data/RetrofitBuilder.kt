@@ -8,13 +8,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-class RetrofitBuilder(
-    private val baseUrl: String
-) {
+class RetrofitBuilder() {
 
     @ExperimentalSerializationApi
     fun build(): Retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl("http://10.0.2.2:3100")
         .client(provideOkHttpClient())
         .addConverterFactory(
             Json {

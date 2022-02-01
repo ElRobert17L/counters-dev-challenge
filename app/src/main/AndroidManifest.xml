@@ -8,14 +8,17 @@
     <application
         android:name=".CountersDevChallengeApp"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CountersDevChallenge"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".presentation.home.HomeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
         <activity
             android:name=".presentation.welcome.WelcomeActivity"

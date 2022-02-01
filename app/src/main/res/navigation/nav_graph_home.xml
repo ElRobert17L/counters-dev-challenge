@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_crudFragment"
             app:destination="@id/crudFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addCounterFragment"
+            app:destination="@id/addCounterFragment" />
     </fragment>
 
     <fragment
@@ -25,5 +28,11 @@
             app:argType="string"
             android:defaultValue="Unknown" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addCounterFragment"
+        android:name="mx.com.rlr.countersdevchallenge.presentation.home.add_counter.AddCounterFragment"
+        android:label="AddCounterFragment"
+        tools:layout="@layout/add_counter_fragment" />
 
 </navigation>

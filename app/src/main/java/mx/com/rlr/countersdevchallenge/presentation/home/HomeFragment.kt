@@ -11,11 +11,14 @@ import mx.com.rlr.base_use_case.Status
 import mx.com.rlr.counters.domain.entity.Counter
 import mx.com.rlr.counters.domain.use_case.get_counters.GetCountersParams
 import mx.com.rlr.counters.presentation.get_counters.GetCountersStatus
+import mx.com.rlr.countersdevchallenge.R
 import mx.com.rlr.countersdevchallenge.databinding.HomeFragmentBinding
 import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.gone
 import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.showSnackbar
 import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.visible
+import mx.com.rlr.countersdevchallenge.presentation.home.counters_adapter.CountersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class HomeFragment : Fragment() {
 
@@ -25,6 +28,10 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
 
+    private val countersAdapter: CountersAdapter by lazy {
+        CountersAdapter(onCounterOnClickListener = onCounterRowClick)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +40,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         executeGetCounters()
+        setUpSwipeRefresh()
+        setUpActions()
+    }
+
+    private fun setUpSwipeRefresh() {
+        binding.homeFragmentSwipe.apply {
+            setOnRefreshListener {
+                executeGetCounters()
+                isRefreshing = false
+            }
+        }
     }
 
     private fun executeGetCounters() {
@@ -58,17 +76,29 @@ class HomeFragment : Fragment() {
                 homeFragmentLlTitles.gone()
                 homeFragmentRvCounters.gone()
                 homeFragmentGl.gone()
+                homeFragmentBtnAddEmpty.visible()
             }
-        } else setUpActions()
+        } else {
+            binding.apply {
+                homeFragmentTvEmptyList.gone()
+                homeFragmentLlTitles.visible()
+                homeFragmentRvCounters.visible()
+                homeFragmentGl.visible()
+                homeFragmentBtnAddEmpty.gone()
+            }
+            setUpRecycler(counters = counters)
+        }
+    }
+
+    private fun setUpRecycler(counters: List<Counter>) {
+        binding.homeFragmentRvCounters.adapter = countersAdapter
+        countersAdapter.submitList(counters)
     }
 
     private fun setUpActions() {
         binding.apply {
             homeFragmentBtnAdd.setOnClickListener {
-                val direction = HomeFragmentDirections.actionHomeFragmentToCrudFragment(
-                    option = "Add"
-                )
-                findNavController().navigate(direction)
+                findNavController().navigate(R.id.action_homeFragment_to_addCounterFragment)
             }
             homeFragmentBtnDelete.setOnClickListener {
                 val direction = HomeFragmentDirections.actionHomeFragmentToCrudFragment(
@@ -88,7 +118,14 @@ class HomeFragment : Fragment() {
                 )
                 findNavController().navigate(direction)
             }
+            homeFragmentBtnAddEmpty.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_addCounterFragment)
+            }
         }
+    }
+
+    private val onCounterRowClick: (Counter) -> Unit = {
+        Timber.d("onCounterRowClick: $it")
     }
 
 }

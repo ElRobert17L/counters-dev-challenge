@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/activity_welcome.xml" value="0.2" />
+        <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/add_counter_fragment.xml" value="0.2" />
         <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/crud_fragment.xml" value="0.1585144927536232" />
         <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/home_fragment.xml" value="0.1585144927536232" />
         <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/layout/item_counter.xml" value="0.1585144927536232" />
+        <entry key="..\:/GitHub/Android Challenge/counters-dev-challenge/app/src/main/res/xml/network_security_config.xml" value="0.1585144927536232" />
       </map>
     </option>
   </component>

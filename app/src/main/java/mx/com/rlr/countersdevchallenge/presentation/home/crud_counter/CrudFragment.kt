@@ -9,13 +9,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import mx.com.rlr.base_use_case.Status
-import mx.com.rlr.counters.presentation.add_counter.AddCounterStatus
+import mx.com.rlr.counters.domain.entity.Counter
 import mx.com.rlr.counters.presentation.dec_counter.DecCounterStatus
 import mx.com.rlr.counters.presentation.delete_counter.DeleteCounterStatus
 import mx.com.rlr.counters.presentation.inc_counter.IncCounterStatus
 import mx.com.rlr.countersdevchallenge.databinding.CrudFragmentBinding
 import mx.com.rlr.countersdevchallenge.presentation.common.enums.CounterOptions
+import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.showMaterialDialog
 import mx.com.rlr.countersdevchallenge.presentation.common.extension.android.showSnackbar
+import mx.com.rlr.countersdevchallenge.presentation.home.counters_adapter.CountersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -29,6 +31,10 @@ class CrudFragment : Fragment() {
 
     private val viewModel: CrudViewModel by viewModel()
 
+    private val countersAdapter: CountersAdapter by lazy {
+        CountersAdapter(onCounterOnClickListener = onCounterRowClick)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,91 +42,66 @@ class CrudFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpView()
         setUpRecycler()
-        setUpAction()
-    }
-
-    private fun setUpView() {
-        val counterOption = CounterOptions.toCounterOptions(args.option).toString()
-        val title = "$counterOption counter"
-
-        binding.apply {
-            crudFragmentTv.text = title
-            crudFragmentBtn.text = counterOption
-        }
     }
 
     private fun setUpRecycler() {
-        //TODO: IMPLEMENTAR RECYLER Y AGREGAR AL XML UN EDIT_TEXT PARA QUE INGRESEN EL ID O TITLE A ELIMINAR
-
+        val counters = viewModel.getCountersResponse.counters
+        binding.crudFragmentRvCounters.adapter = countersAdapter
+        countersAdapter.submitList(counters)
     }
 
-    private fun setUpAction() {
-        binding.crudFragmentBtn.setOnClickListener(::optionClickListener)
+    private val onCounterRowClick: (Counter) -> Unit = {
+        showMaterialDialog(
+            title = "Change confirmation",
+            message = "This element will be modified: $it",
+            positiveText = "You're sure?",
+            negativeText = "Cancel",
+            action = { _, _ ->
+                when(CounterOptions.toCounterOptions(args.option)) {
+                    CounterOptions.DELETE -> executeDeleteCounter(counter = it)
+                    CounterOptions.INCREASE -> executeIncCounter(counter = it)
+                    CounterOptions.DECREASE -> executeDecCounter(counter = it)
+                    else -> Timber.e("Error counter options")
+                }
+            }
+        )
     }
 
-    private fun optionClickListener(view: View) {
-        when(CounterOptions.toCounterOptions(args.option)) {
-            CounterOptions.ADD -> executeAddCounter(view = view)
-            CounterOptions.DELETE -> executeDeleteCounter(view = view)
-            CounterOptions.INCREASE -> executeIncCounter(view = view)
-            CounterOptions.DECREASE -> executeDecCounter(view = view)
-            else -> Timber.e("Error counter options")
-        }
+    private fun executeDeleteCounter(counter: Counter) {
+        viewModel.deleteCounterAsLiveData(id = counter.id)
+            .observe(viewLifecycleOwner, deleteCounter())
     }
 
-    private fun executeAddCounter(view: View) {
-        viewModel.addCounterAsLiveData(title = "")
-            .observe(viewLifecycleOwner, addCounter(view = view))
-    }
-
-    private fun addCounter(view: View) = Observer<AddCounterStatus> {
-        view.isEnabled = true
+    private fun deleteCounter() = Observer<DeleteCounterStatus> {
         when (it) {
-            is Status.Loading -> view.isEnabled = false
+            is Status.Loading -> {/* PASS */}
             is Status.Failed -> showSnackbar(it.failure.toString())
             is Status.Done -> findNavController().popBackStack()
         }
     }
 
-    private fun executeDeleteCounter(view: View) {
-        viewModel.deleteCounterAsLiveData(id = "")
-            .observe(viewLifecycleOwner, deleteCounter(view = view))
+    private fun executeIncCounter(counter: Counter) {
+        viewModel.incCounterAsLiveData(id = counter.id)
+            .observe(viewLifecycleOwner, incCounter())
     }
 
-    private fun deleteCounter(view: View) = Observer<DeleteCounterStatus> {
-        view.isEnabled = true
+    private fun incCounter() = Observer<IncCounterStatus> {
         when (it) {
-            is Status.Loading -> view.isEnabled = false
+            is Status.Loading -> {/* PASS */}
             is Status.Failed -> showSnackbar(it.failure.toString())
             is Status.Done -> findNavController().popBackStack()
         }
     }
 
-    private fun executeIncCounter(view: View) {
-        viewModel.incCounterAsLiveData(id = "")
-            .observe(viewLifecycleOwner, incCounter(view = view))
+    private fun executeDecCounter(counter: Counter) {
+        viewModel.decCounterAsLiveData(id = counter.id)
+            .observe(viewLifecycleOwner, decCounter())
     }
 
-    private fun incCounter(view: View) = Observer<IncCounterStatus> {
-        view.isEnabled = true
+    private fun decCounter() = Observer<DecCounterStatus> {
         when (it) {
-            is Status.Loading -> view.isEnabled = false
-            is Status.Failed -> showSnackbar(it.failure.toString())
-            is Status.Done -> findNavController().popBackStack()
-        }
-    }
-
-    private fun executeDecCounter(view: View) {
-        viewModel.decCounterAsLiveData(id = "")
-            .observe(viewLifecycleOwner, decCounter(view = view))
-    }
-
-    private fun decCounter(view: View) = Observer<DecCounterStatus> {
-        view.isEnabled = true
-        when (it) {
-            is Status.Loading -> view.isEnabled = false
+            is Status.Loading -> {/* PASS */}
             is Status.Failed -> showSnackbar(it.failure.toString())
             is Status.Done -> findNavController().popBackStack()
         }
